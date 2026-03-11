@@ -6,7 +6,7 @@ import csv
 import uuid
 from datetime import datetime
 
-base_url = "https://api.openai.com/v1"
+base_url = "https://openai.vocareum.com/v1"
 
 # DirectPromptAgent class definition
 class DirectPromptAgent:
@@ -17,7 +17,7 @@ class DirectPromptAgent:
 
     def respond(self, prompt):
         # Generate a response using the OpenAI API
-        client = OpenAI(api_key=self.openai_api_key, base_url=base_url)
+        client = OpenAI(api_key=self.openai_api_key)
         response = client.chat.completions.create(
             model="gpt-3.5-turbo",
             messages=[
@@ -161,9 +161,6 @@ class RAGKnowledgePromptAgent:
                 "start_char": start,
                 "end_char": end
             })
-
-            if end == len(text):
-                break
 
             start = end - self.chunk_overlap
             chunk_id += 1
