@@ -224,18 +224,22 @@ class EvaluationAgent:
         self.worker_agent = worker_agent
         self.max_interactions = max_interactions
 
-    def evaluate(self, initial_prompt):
+    def evaluate(self, initial_prompt,initial_response=None):
         # This method manages interactions between agents to achieve a solution.
         client = OpenAI(api_key=self.openai_api_key, base_url=base_url)
         prompt_to_evaluate = initial_prompt
 
         for i in range(self.max_interactions):
             print(f"\n--- Interaction {i+1} ---")
-
-            print(" Step 1: Worker agent generates a response to the prompt")
-            print(f"Prompt:\n{prompt_to_evaluate}")
-            response_from_worker = self.worker_agent.respond(prompt_to_evaluate)
-            print(f"Worker Agent Response:\n{response_from_worker}")
+            if initial_response is not None and i == 0:
+                print(" Step 1: Using initial response provided for evaluation")
+                print(f"Initial Response:\n{initial_response}")
+                response_from_worker = initial_response
+            else:
+                print(" Step 1: Worker agent generates a response to the prompt")
+                print(f"Prompt:\n{prompt_to_evaluate}")
+                response_from_worker = self.worker_agent.respond(prompt_to_evaluate)
+                print(f"Worker Agent Response:\n{response_from_worker}")
 
             print(" Step 2: Evaluator agent judges the response")
             eval_prompt = (

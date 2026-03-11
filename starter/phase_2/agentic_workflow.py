@@ -85,6 +85,17 @@ evaluation_criteria_dev_engineer = (
 
 development_engineer_evaluation_agent = EvaluationAgent(openai_api_key, persona_dev_engineer_eval, evaluation_criteria_dev_engineer, development_engineer_knowledge_agent, 10)
 
+def product_manager_support_function(query):
+    response = product_manager_knowledge_agent.respond(query)
+    return product_manager_evaluation_agent.evaluate(query, response)
+
+def program_manager_support_function(prompt):
+    response = program_manager_knowledge_agent.respond(prompt)
+    return program_manager_evaluation_agent.evaluate(prompt, response)
+
+def development_engineer_support_function(prompt):
+    response = development_engineer_knowledge_agent.respond(prompt)
+    return development_engineer_evaluation_agent.evaluate(prompt, response)
 
 # Routing Agent
 # TODO: 10 - Instantiate a routing_agent. You will need to define a list of agent dictionaries (routes) for Product Manager, Program Manager, and Development Engineer. Each dictionary should contain 'name', 'description', and 'func' (linking to a support function). Assign this list to the routing_agent's 'agents' attribute.
@@ -92,17 +103,17 @@ agents = [
     {
         "name": "product manager agent",
         "description": "Answer questions related to defining user stories for a product",
-        "func": lambda x: product_manager_evaluation_agent.evaluate(x)
+        "func": lambda x: product_manager_support_function(x)
     },
     {
         "name": "program manager agent",
         "description": "Answer questions related to defining features for a product",
-        "func": lambda x: program_manager_evaluation_agent.evaluate(x)
+        "func": lambda x: program_manager_support_function(x)
     },
     {
         "name": "development engineer agent",
         "description": "Answer questions related to defining development tasks for a product",
-        "func": lambda x: development_engineer_evaluation_agent.evaluate(x)
+        "func": lambda x: development_engineer_support_function(x)
     }
 ]
 
