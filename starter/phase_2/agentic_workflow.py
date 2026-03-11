@@ -87,15 +87,15 @@ development_engineer_evaluation_agent = EvaluationAgent(openai_api_key, persona_
 
 def product_manager_support_function(query):
     response = product_manager_knowledge_agent.respond(query)
-    return product_manager_evaluation_agent.evaluate(query, response)
+    return product_manager_evaluation_agent.evaluate(query, response)['final_response']
 
 def program_manager_support_function(prompt):
     response = program_manager_knowledge_agent.respond(prompt)
-    return program_manager_evaluation_agent.evaluate(prompt, response)
+    return program_manager_evaluation_agent.evaluate(prompt, response)['final_response']
 
 def development_engineer_support_function(prompt):
     response = development_engineer_knowledge_agent.respond(prompt)
-    return development_engineer_evaluation_agent.evaluate(prompt, response)
+    return development_engineer_evaluation_agent.evaluate(prompt, response)['final_response']
 
 # Routing Agent
 # TODO: 10 - Instantiate a routing_agent. You will need to define a list of agent dictionaries (routes) for Product Manager, Program Manager, and Development Engineer. Each dictionary should contain 'name', 'description', and 'func' (linking to a support function). Assign this list to the routing_agent's 'agents' attribute.
@@ -125,7 +125,7 @@ routing_agent = RoutingAgent(openai_api_key, agents)
 print("\n*** Workflow execution started ***\n")
 # Workflow Prompt
 # ****
-workflow_prompt = "What would the development tasks for this product be?"
+workflow_prompt = "Create a complete project plan with user stories, product features, and engineering tasks"
 # ****
 print(f"Task to complete in this workflow, workflow prompt = {workflow_prompt}")
 
